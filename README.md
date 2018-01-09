@@ -1,1 +1,2 @@
-# Collaborative_Project_CS043
+# game
+Base for pyramid game
