@@ -1,1 +1,1 @@
-# Collaboratve_Project_CS043
+# Collaborative_Project_CS043
