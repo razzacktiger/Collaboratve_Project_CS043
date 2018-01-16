@@ -24,11 +24,8 @@ class TTT:
         # Returns a list with the player's letter as the first item, and the computer's letter as the second.
         letter = ''
         while not (letter == 'X' or letter == 'O'):
-            # NOTE: in the return statement below, the path is missing, because I don't know what it is.
-            # Add it in later.
-            return['Do you want to be X or O? </br><a href="/?letter=X">X</a>    <a href="/?letter=O">O</a>'.encode()]
-        if path=="":
-            # make the player's letter X or O
+            print('Do you want to be X or O?')
+            letter = input().upper()
 
         # the first element in the tuple is the player's letter, the second is the computer's letter.
         if letter == 'X':
