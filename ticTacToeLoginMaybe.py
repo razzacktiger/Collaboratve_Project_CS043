@@ -69,10 +69,20 @@ def application(environ, start_response):
 
         # ------------------------------------------------------------------------------------------------------------ #
         if user:
-            page='<!DOCTYPE html><html><head><title>TTT Game</title></head><body><h1>TEST</h1>'
-            game=TTT
+            page = str('<!DOCTYPE html><html><head><title>TTT Game</title></head><body style="text-align:center;">' +
+                    '<h1>Tic-Tac-Toe</h1>')
+            game = TTT
             # Reset the board
-            theBoard = [' '] * 10
+            theBoard = ['', '<input type="radio" name="playerMove" value="1">',
+                        '<input type="radio" name="playerMove" value="2">',
+                        '<input type="radio" name="playerMove" value="3">',
+                        '<input type="radio" name="playerMove" value="4">',
+                        '<input type="radio" name="playerMove" value="5">',
+                        '<input type="radio" name="playerMove" value="6">',
+                        '<input type="radio" name="playerMove" value="7">',
+                        '<input type="radio" name="playerMove" value="8">',
+                        '<input type="radio" name="playerMove" value="9">']
+            playerMove = params['playerMove'][0] if 'playerMove' in params else None
             playerLetter1, playerLetter2 = game.inputPlayerLetter()
             turn = game.whoGoesFirst()
             print('The ' + turn + ' will go first.') #HTML
