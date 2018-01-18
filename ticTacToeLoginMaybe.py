@@ -73,49 +73,53 @@ def application(environ, start_response):
             game=TTT
             # Reset the board
             theBoard = [' '] * 10
-            playerLetter, computerLetter = game.inputPlayerLetter()
+            playerLetter1, playerLetter2 = game.inputPlayerLetter()
             turn = game.whoGoesFirst()
-            print('The ' + turn + ' will go first.')
+            print('The ' + turn + ' will go first.') #HTML
             gameIsPlaying = True
 
             while gameIsPlaying:
-                if turn == 'player':
+                if turn == 'player1': #***update program name defs
                     # Player's turn.
-                    page+=game.drawBoard(theBoard)
+                    page+=game.drawBoard(theBoard)   #We should add an input box or create a hyperlink system like 
+                    #                                 we did with the last unit 5 project to click on the box that we want 
+                    #                                 the player to make a move in.
                     move = game.getPlayerMove(theBoard)
-                    game.makeMove(theBoard, playerLetter, move)
+                    game.makeMove(theBoard, playerLetter1, move) #***update program name defs
 
-                    if game.isWinner(theBoard, playerLetter):
+                    if game.isWinner(theBoard, playerLetter1): #***update program name defs
                         game.drawBoard(theBoard)
-                        print('Hooray! You have won the game!')
+                        print('Hooray! You have won the game!') #HTML
+                        gameIsPlaying = False 
+                    else:
+                        if game.isBoardFull(theBoard):
+                            game.drawBoard(theBoard)
+                            print('The game is a tie!') #HTML page+= stuff... you know
+                            break     #End of game replace with some HTML and link to restart
+                        else:
+                            turn = 'player2'  #***again update program name def
+             
+                if turn == 'player2': #***update program name defs
+                    # Computer's turn(Testing purposes). #Really player2's turn but for now we are testing with an AI
+                    # We will eventually later convert all this code back to almost the same identicle stuff as player 1's turn
+                    move = game.getComputerMove(theBoard, playerLetter1)   #We will proabably take out Computermove function 
+                                                                           #and replace it with player2move or sometime 
+                    game.makeMove(theBoard, playerLetter1, move)
+
+                    if game.isWinner(theBoard, playerLetter1):
+                        game.drawBoard(theBoard)
+                        print('The computer has beaten you! You lose.')    #change this stuff up along with the phrase
                         gameIsPlaying = False
                     else:
                         if game.isBoardFull(theBoard):
                             game.drawBoard(theBoard)
-                            print('The game is a tie!')
+                            print('The game is a tie!')  #HTML fix this stuff
                             break
                         else:
-                            turn = 'computer'
-
-                else:
-                    # Computer's turn.
-                    move = game.getComputerMove(theBoard, computerLetter)
-                    game.makeMove(theBoard, computerLetter, move)
-
-                    if game.isWinner(theBoard, computerLetter):
-                        game.drawBoard(theBoard)
-                        print('The computer has beaten you! You lose.')
-                        gameIsPlaying = False
-                    else:
-                        if game.isBoardFull(theBoard):
-                            game.drawBoard(theBoard)
-                            print('The game is a tie!')
-                            break
-                        else:
-                            turn = 'player'
+                            turn = 'player1'
 
                 if not game.playAgain():
-                    break
+                    break      #update this stuff with hyperlink s not "break"
             page+='</body></html>'
             return [page.encode()]
         else:
