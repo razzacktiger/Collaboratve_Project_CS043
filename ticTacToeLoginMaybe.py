@@ -3,7 +3,7 @@ import urllib.parse
 import sqlite3
 import http.cookies
 import random
-from ticTacToeClass import TTT
+from boardOnlyTesting import TTT
 
 connection = sqlite3.connect('TTT-Users.db')
 stmt = "SELECT name FROM sqlite_master WHERE type='table' AND name='users'"
