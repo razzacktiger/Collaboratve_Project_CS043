@@ -82,12 +82,16 @@ def application(environ, start_response):
                         '<input type="radio" name="playerMove" value="7">',
                         '<input type="radio" name="playerMove" value="8">',
                         '<input type="radio" name="playerMove" value="9">']
-            playerMove = params['playerMove'][0] if 'playerMove' in params else None
-            # ---- erase this later ---- #
-            page += TTT.drawBoard(game, theBoard)
-            page += ('<br>' + playerMove)
-            return [page.encode()]
-            # ---- erase this later ---- #
+            if 'playerMove' in params:
+                playerMove = params['playerMove'][0]
+            # ----------- erase this later ----------- #
+                page += TTT.drawBoard(game, theBoard)
+                page += '<br>' + playerMove
+                return [page.encode()]
+            else:
+                page += TTT.drawBoard(game, theBoard)
+                return [page.encode()]
+            # ----------- erase this later ----------- #
             playerLetter1, playerLetter2 = game.inputPlayerLetter()
             turn = game.whoGoesFirst()
             print('The ' + turn + ' will go first.') #HTML
