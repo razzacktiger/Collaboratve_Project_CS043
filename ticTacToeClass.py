@@ -1,6 +1,6 @@
-
+import random
 class TTT:
-         def drawBoard(self, board):
+    def drawBoard(self, board):
         # This function prints out the board that it was passed.
         # "board" is a list of 10 strings representing the board (ignore index 0)
         boardpage = '''<form style="line-height:5px"><pre>         |    |</br>
@@ -19,34 +19,34 @@ class TTT:
         return boardpage
 
 
-    def inputPlayerLetter(self, path):
+    def inputPlayerLetter(TTT, page):
         # Lets the player type which letter they want to be.
-        # Returns a list with the player's letter as the first item, and the computer's letter as the second.
         letter = ''
         while not (letter == 'X' or letter == 'O'):
-            print('Do you want to be X or O?')
-            letter = input().upper()
+            page += '''<h1>Do player1 want to be X or O?</h1>'''
+            letter = '''<form>
+            First name:<br>
+            <input type="text" name="X or O?:"><br>
+            </form><input type="" value="Make Move"></form>'''
+            if letter == 'X':
+                return ['X', 'O']
+            else:
+                return ['O', 'X']
 
-        # the first element in the tuple is the player's letter, the second is the computer's letter.
-        if letter == 'X':
-            return ['X', 'O']
-        else:
-            return ['O', 'X']
-
-    def whoGoesFirst():
+    def whoGoesFirst(self):
         # Randomly choose the player who goes first.
         if random.randint(0, 1) == 0:
-            return 'computer'
+            return 'player1'
         else:
-            return 'player'
+            return 'player2'
 
-    def playAgain():
+    def playAgain(self):
         # This function returns True if the player wants to play again, otherwise it returns False.
         print('Do you want to play again? (yes or no)')
         return input().lower().startswith('y')
 
     def makeMove(board, letter, move):
-        board[move] = letter
+        board[int(move)] = letter
 
     def isWinner(bo, le):
         # Given a board and a player's letter, this function returns True if that player has won.
@@ -73,12 +73,12 @@ class TTT:
         # Return true if the passed move is free on the passed board.
         return board[move] == ' '
 
-    def getPlayerMove(board):
+    def getPlayerMove(board):       #I think we would need to discard this function
         # Let the player type in his move.
         move = ' '
         while move not in '1 2 3 4 5 6 7 8 9'.split() or not isSpaceFree(board, int(move)):
-            print('What is your next move? (1-9)')
-            move = input()
+            print('What is your next move? (1-9)')   #HTML
+            move = input()    #HTML
         return int(move)
 
     def chooseRandomMoveFromList(board, movesList):
@@ -100,3 +100,4 @@ class TTT:
             if isSpaceFree(board, i):
                 return False
         return True
+
