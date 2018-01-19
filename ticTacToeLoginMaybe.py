@@ -70,7 +70,7 @@ def application(environ, start_response):
         # ------------------------------------------------------------------------------------------------------------ #
         if user:
             page = str('<!DOCTYPE html><html><head><title>TTT Game</title></head><body style="text-align:center;">' +
-                    '<h1>Tic-Tac-Toe</h1>')
+                       '<h1>Tic-Tac-Toe</h1>')
             game = TTT
             # Reset the board
             theBoard = ['', '<input type="radio" name="playerMove" value="1">',
@@ -82,55 +82,69 @@ def application(environ, start_response):
                         '<input type="radio" name="playerMove" value="7">',
                         '<input type="radio" name="playerMove" value="8">',
                         '<input type="radio" name="playerMove" value="9">']
-            playerMove = params['playerMove'][0] if 'playerMove' in params else None
-            playerLetter1, playerLetter2 = game.inputPlayerLetter()
-            turn = game.whoGoesFirst()
-            print('The ' + turn + ' will go first.') #HTML
+
+            playerLetter1, playerLetter2 = game.inputPlayerLetter(TTT, page)
+            turn = game.whoGoesFirst(TTT)
+            print('The ' + turn + ' will go first.')  # HTML
             gameIsPlaying = True
 
             while gameIsPlaying:
-                if turn == 'player1': #***update program name defs
-                    # Player's turn.
-                    page+=game.drawBoard(theBoard)   #We should add an input box or create a hyperlink system like 
-                    #                                 we did with the last unit 5 project to click on the box that we want 
-                    #                                 the player to make a move in.
-                    move = game.getPlayerMove(theBoard)
-                    game.makeMove(theBoard, playerLetter1, move) #***update program name defs
+                if turn == 'player1':
+                    #Insert HTML saying that this is player 1's turn.
+                    if 'playerMove' in params:
+                        playerMove = params['playerMove'][0]
+                        game.makeMove(theBoard, playerLetter1, playerMove)
+                        page += TTT.drawBoard(game, theBoard) #A
+                        page += '<br>' + playerMove
+                        return [page.encode()]
+                    if 'playerMove' not in params:
+                        page += TTT.drawBoard(game, theBoard)   #Add some HTML here so that it looks friendlier
+                        return [page.encode()]
+                    # ----------- erase this later **i dont think so ----------- #
+                    #move = game.getPlayerMove(theBoard)    #I think we would need to discard this line
+                      # ***update program name defs
 
-                    if game.isWinner(theBoard, playerLetter1): #***update program name defs
+                    if game.isWinner(theBoard, playerLetter1):  # ***update program name defs
                         game.drawBoard(theBoard)
-                        print('Hooray! You have won the game!') #HTML
-                        gameIsPlaying = False 
+                        print('Hooray! You have won the game!')  # HTML
+                        gameIsPlaying = False
+                    if game.isBoardFull(theBoard):
+                        game.drawBoard(theBoard)
+                        print('The game is a tie!')  # HTML page+= stuff... you know
+                        break  # End of game replace with some HTML and link to restart
                     else:
-                        if game.isBoardFull(theBoard):
-                            game.drawBoard(theBoard)
-                            print('The game is a tie!') #HTML page+= stuff... you know
-                            break     #End of game replace with some HTML and link to restart
-                        else:
-                            turn = 'player2'  #***again update program name def
-             
-                if turn == 'player2': #***update program name defs
+                        turn = 'player2'  # ***again update program name def
+
+                if turn == 'player2':  # ***update program name defs
                     # Computer's turn(Testing purposes). #Really player2's turn but for now we are testing with an AI
                     # We will eventually later convert all this code back to almost the same identicle stuff as player 1's turn
-                    move = game.getComputerMove(theBoard, playerLetter1)   #We will proabably take out Computermove function 
-                                                                           #and replace it with player2move or sometime 
-                    game.makeMove(theBoard, playerLetter1, move)
+                    if 'playerMove' in params:
+                        playerMove = params['playerMove'][0]
+                        game.makeMove(theBoard, playerLetter2, playerMove)
+                        page += TTT.drawBoard(game, theBoard) #A
+                        page += '<br>' + playerMove
+                        return [page.encode()]
+                    if 'playerMove' not in params:
+                        page += TTT.drawBoard(game, theBoard)   #Add some HTML here so that it looks friendlier
+                        return [page.encode()]
+                    # ----------- erase this later **i dont think so ----------- #
+                    #move = game.getPlayerMove(theBoard)    #I think we would need to discard this line
+                      # ***update program name defs
 
-                    if game.isWinner(theBoard, playerLetter1):
+                    if game.isWinner(theBoard, playerLetter2):  # ***update program name defs
                         game.drawBoard(theBoard)
-                        print('The computer has beaten you! You lose.')    #change this stuff up along with the phrase
+                        print('Hooray! You have won the game!')  # HTML
+                        gameIsPlaying = False
+                    if game.isBoardFull(theBoard):
+                        game.drawBoard(theBoard)
+                        print('The game is a tie!')  # HTML page+= stuff... you know
                         gameIsPlaying = False
                     else:
-                        if game.isBoardFull(theBoard):
-                            game.drawBoard(theBoard)
-                            print('The game is a tie!')  #HTML fix this stuff
-                            break
-                        else:
-                            turn = 'player1'
+                        turn = 'player1'
 
                 if not game.playAgain():
-                    break      #update this stuff with hyperlink s not "break"
-            page+='</body></html>'
+                    break  # update this stuff with hyperlink s not "break"
+            page += '</body></html>'
             return [page.encode()]
         else:
             return ['Not logged in. <a href="/">Login</a>'.encode()]
@@ -141,21 +155,18 @@ def application(environ, start_response):
         register_or_login = '''<!DOCTYPE html><html><head><title>Register/Login</title></head>
         <body>
         <h1>Welcome to Tic-Tac-Toe</h1>
-
         <form action="/login">
         <h1>Login</h1><br>
         Username<input type="text" name="username"><br>
         Password<input type="password" name="password"><br>
         <input type="submit" value="Log in"><br>
         </form>
-
         <form action="/register">
         <h1>Register</h1><br>
         Username<input type="text" name="username"><br>
         Password<input type="password" name="password"><br>
         <input type="submit" value="Register">
         </form>
-
         </body>
         </html>'''
         return [register_or_login.encode()]
