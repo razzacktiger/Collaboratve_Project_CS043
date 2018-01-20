@@ -18,20 +18,20 @@ class TTT:
         '''
         return boardpage
 
-
-    def inputPlayerLetter(TTT, page):
-        # Lets the player type which letter they want to be.
-        letter = ''
-        while not (letter == 'X' or letter == 'O'):
-            page += '''<h1>Do player1 want to be X or O?</h1>'''
-            letter = '''<form>
-            First name:<br>
-            <input type="text" name="X or O?:"><br>
-            </form><input type="" value="Make Move"></form>'''
-            if letter == 'X':
-                return ['X', 'O']
-            else:
-                return ['O', 'X']
+#    def inputPlayerLetter(self, letter):
+#        # Lets the player type which letter they want to be.
+#        letter = ''
+#        while not (letter == 'X' or letter == 'O'):
+#            page = '''<h1>Player one: pick a letter to play with</h1>'''
+#            letter = '''<form action="/play/game"><br>
+#            X<input type="radio" name="playerLetter" value="X"><br>
+#            O<input type="radio" name="playerLetter" value="O"><br>
+#            <input type="submit" value="Choose Letter"></form>'''
+#            letter = parameters['playerLetter'][0] if 'playerLetter' in parameters else None
+#            if letter == 'X':
+#                return ['X', 'O', page]
+#            elif letter == 'O':
+#                return ['X', 'O', page]
 
     def whoGoesFirst(self):
         # Randomly choose the player who goes first.
@@ -73,14 +73,6 @@ class TTT:
         # Return true if the passed move is free on the passed board.
         return board[move] == ' '
 
-    def getPlayerMove(board):       #I think we would need to discard this function
-        # Let the player type in his move.
-        move = ' '
-        while move not in '1 2 3 4 5 6 7 8 9'.split() or not isSpaceFree(board, int(move)):
-            print('What is your next move? (1-9)')   #HTML
-            move = input()    #HTML
-        return int(move)
-
     def chooseRandomMoveFromList(board, movesList):
         # Returns a valid move from the passed list on the passed board.
         # Returns None if there is no valid move.
@@ -101,3 +93,22 @@ class TTT:
                 return False
         return True
 
+
+#            page = ('<!DOCTYPE html><html><head><title>TTT Game</title></head><body style="text-align:center;">' +
+#                    '<h1>Tic-Tac-Toe</h1>')
+#            page += '''<h1>Player one: pick a letter to play with</h1>
+#                                <form><br>
+#                                X<input type="radio" name="playerLetter1" value="X"><br>
+#                                O<input type="radio" name="playerLetter1" value="O"><br>
+#                                <input type="submit" value="Choose Letter"></form>'''
+#            page += '</body></html>'
+#            if 'playerLetter1' in params:
+#                letter = params['playerLetter1'][0]
+#                if letter == 'X':
+#                    game.playerLetter1 = 'X'
+#                    game.playerLetter2 = 'O'
+#                    return ['Player one is X, player two is O. </br><a href="/play?playerLetter1=X>Play the game</a>']
+#                elif letter == 'O':
+#                    game.playerLetter1 = 'X'
+#                    game.playerLetter2 = 'O'
+#                    return ['Player one is O, player two is X. </br><a href="/play?playerLetter1=O>Play the game</a>']
