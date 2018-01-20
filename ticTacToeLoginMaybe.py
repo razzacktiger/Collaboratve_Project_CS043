@@ -69,9 +69,41 @@ def application(environ, start_response):
 
         # ------------------------------------------------------------------------------------------------------------ #
         if user:
+            game=TTT()
+            # Note: if you erase the if statement below you can see what the choice thing looks like, but it doesn't
+            # save the data of the choice and it keeps coming back to ask you again between turns. I did get it to store
+            # the data in the URL and then in two variables (playerLetter1 and playerLetter2) but that doesn't mean it
+            # doesn't keep coming back to ask again. If you keep the if statement there's a giant, incomprehensible
+            # error message, so I wouldn't recommend it.
+            if not ('playerLetter1' in locals()):
+                page = ('<!DOCTYPE html><html><head><title>TTT Game</title></head><body style="text-align:center;">' +
+                        '<h1>Tic-Tac-Toe</h1>')
+                page += '''<h1>Player one: pick a letter to play with</h1>                                                
+                                    <form><br>                                                                            
+                                    X<input type="radio" name="playerLetter1" value="X"><br>                              
+                                    O<input type="radio" name="playerLetter1" value="O"><br>                              
+                                    <input type="submit" value="Choose Letter"></form>'''
+                page += '</body></html>'
+                if 'playerLetter1' in params:
+                    letter = params['playerLetter1'][0]
+                    if letter == 'X':
+                        playerLetter1 = 'X'
+                        playerLetter2 = 'O'
+                        return [
+                            'Player one is X, player two is O. </br><a href="/play?playerLetter1=X>Play the game</a>']
+                    elif letter == 'O':
+                        playerLetter1 = 'X'
+                        playerLetter2 = 'O'
+                        return [
+                            'Player one is O, player two is X. </br><a href="/play?playerLetter1=O>Play the game</a>']
+                else:
+                    return [page.encode()]
+
+            #This is where the game starts, rather than the letter selection thing, which is above ^^
+
             page = str('<!DOCTYPE html><html><head><title>TTT Game</title></head><body style="text-align:center;">' +
                        '<h1>Tic-Tac-Toe</h1>')
-            game = TTT
+
             # Reset the board
             theBoard = ['', '<input type="radio" name="playerMove" value="1">',
                         '<input type="radio" name="playerMove" value="2">',
@@ -83,7 +115,6 @@ def application(environ, start_response):
                         '<input type="radio" name="playerMove" value="8">',
                         '<input type="radio" name="playerMove" value="9">']
 
-            playerLetter1, playerLetter2 = game.inputPlayerLetter(TTT, page)
             turn = game.whoGoesFirst(TTT)
             print('The ' + turn + ' will go first.')  # HTML
             gameIsPlaying = True
