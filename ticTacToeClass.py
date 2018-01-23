@@ -18,37 +18,23 @@ class TTT:
         '''
         return boardpage
 
-
-    def inputPlayerLetter(TTT, page):
-        # Lets the player type which letter they want to be.
-        letter = ''
-        while not (letter == 'X' or letter == 'O'):
-            page += '''<h1>Do player1 want to be X or O?</h1>'''
-            letter = '''<form>
-            First name:<br>
-            <input type="text" name="X or O?:"><br>
-            </form><input type="" value="Make Move"></form>'''
-            if letter == 'X':
-                return ['X', 'O']
-            else:
-                return ['O', 'X']
-
     def whoGoesFirst(self):
         # Randomly choose the player who goes first.
         if random.randint(0, 1) == 0:
-            return 'player1'
+            return 'X'
         else:
-            return 'player2'
+            return 'O'
 
     def playAgain(self):
         # This function returns True if the player wants to play again, otherwise it returns False.
         print('Do you want to play again? (yes or no)')
         return input().lower().startswith('y')
 
-    def makeMove(board, letter, move):
+    def makeMove(self, board, letter, move):
         board[int(move)] = letter
+        return board
 
-    def isWinner(bo, le):
+    def isWinner(self, bo, le):
         # Given a board and a player's letter, this function returns True if that player has won.
         # We use bo instead of board and le instead of letter so we don't have to type as much.
         return ((bo[7] == le and bo[8] == le and bo[9] == le) or  # across the top
@@ -60,7 +46,7 @@ class TTT:
                 (bo[7] == le and bo[5] == le and bo[3] == le) or  # diagonal
                 (bo[9] == le and bo[5] == le and bo[1] == le))  # diagonal
 
-    def getBoardCopy(board):
+    def getBoardCopy(self, board):
         # Make a duplicate of the board list and return it the duplicate.
         dupeBoard = []
 
@@ -69,35 +55,13 @@ class TTT:
 
         return dupeBoard
 
-    def isSpaceFree(board, move):
+    def isSpaceFree(self, board, move):
         # Return true if the passed move is free on the passed board.
         return board[move] == ' '
 
-    def getPlayerMove(board):       #I think we would need to discard this function
-        # Let the player type in his move.
-        move = ' '
-        while move not in '1 2 3 4 5 6 7 8 9'.split() or not isSpaceFree(board, int(move)):
-            print('What is your next move? (1-9)')   #HTML
-            move = input()    #HTML
-        return int(move)
-
-    def chooseRandomMoveFromList(board, movesList):
-        # Returns a valid move from the passed list on the passed board.
-        # Returns None if there is no valid move.
-        possibleMoves = []
-        for i in movesList:
-            if isSpaceFree(board, i):
-                possibleMoves.append(i)
-
-        if len(possibleMoves) != 0:
-            return random.choice(possibleMoves)
-        else:
-            return None
-
-    def isBoardFull(board):
+    def isBoardFull(self, board):
         # Return True if every space on the board has been taken. Otherwise return False.
         for i in range(1, 10):
             if isSpaceFree(board, i):
                 return False
         return True
-
