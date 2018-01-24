@@ -47,7 +47,7 @@ class TTT:
                 (bo[9] == le and bo[6] == le and bo[3] == le) or  # down the right side
                 (bo[7] == le and bo[5] == le and bo[3] == le) or  # diagonal
                 (bo[9] == le and bo[5] == le and bo[1] == le))  # diagonal
-
+#
     def isSpaceFree(self, board, move):
         # Return true if the passed move is free on the passed board.
         return board[move] == ' '
