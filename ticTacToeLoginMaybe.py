@@ -81,67 +81,62 @@ def application(environ, start_response):
         if user:
             page = str('<!DOCTYPE html><html><head><title>TTT Game</title></head><body style="text-align:center;">' +
                        '<h2>Tic-Tac-Toe</h2>')
+            global turn
             turn = game.whoGoesFirst()
-            gameIsPlaying = True
-
-            while gameIsPlaying: # Just as a side note, I'm not sure we even need this line for the game to run.
-                if turn == 'X':
-                    page += '<br>X\'s turn<br>'
-                    if 'playerMove' in params:
-                        playerMove = params['playerMove'][0]
-                        game.board = game.makeMove(game.board, 'X', playerMove)
-                        page += TTT.drawBoard(game, game.board)
-                        page += '<br>' + playerMove
-                        turn = 'O'
-                        return [page.encode()]
-                    if 'playerMove' not in params:
-                        page += TTT.drawBoard(game, game.board)
-                        return [page.encode()]
+                                    # Just as a side note, I'm not sure we even need this line for the game to run.
+            while turn == 'X':
+                page += '<br>It is/was X\'s turn<br>'
+                if 'playerMove' not in params:
+                    page += TTT.drawBoard(game, game.board)
+                    return [page.encode()]
+                elif 'playerMove' in params:
+                    playerMove = params['playerMove'][0]
+                    game.board = game.makeMove(game.board, 'X', playerMove)
+                    page += TTT.drawBoard(game, game.board)
+                    page += '<br>' + playerMove
+                    turn = 'O'
                     if game.isWinner(game.board, 'X'):
-                        page += game.drawBoard(game.board)
-                        page += '<br>Player one wins!<br>' # Add hyperlinks here for "play again" and "quit/logout".
+                        page += '<br>Player X wins!<br>' # Add hyperlinks here for "play again" and "quit/logout".
                         game.board = theBoard
                         gameIsPlaying = False
-                    if game.isBoardFull(game.board):
-                        page += game.drawBoard(game.board)
-                        page += '<br>The game is a tie.<br>' # Add hyperlinks here for "play again" and "quit/logout".
-                        game.board = theBoard
                         return [page.encode()]
+                    for i in range(1, 10):
+                        if game.isBoardFull(game.board, i):
+                            page += '<br>The game is a tie.<br>'
+                             # Add hyperlinks here for "play again" and "quit/logout".
+                            game.board = theBoard
+                            return [page.encode()]
                     else:
-                        turn = 'O'
+                        return [page.encode()]
+                else:
+                    return [page.encode()]
 
-                if turn == 'O':
-                    page += '<br>O\'s turn<br>'
-                    if 'playerMove' in params:
-                        playerMove = params['playerMove'][0]
-                        TTT.makeMove(game, game.board, 'O', playerMove)
-                        page += TTT.drawBoard(game, game.board)
-                        page += '<br>' + playerMove
-                        turn = 'X'
-                        return [page.encode()]
-                    if 'playerMove' not in params:
-                        page += TTT.drawBoard(game, game.board)
-                        return [page.encode()]
+            while turn == 'O':
+                page += '<br>It is/was O\'s turn<br>'
+                if 'playerMove' not in params:
+                    page += TTT.drawBoard(game, game.board)
+                    return [page.encode()]
+                elif 'playerMove' in params:
+                    playerMove = params['playerMove'][0]
+                    game.board = game.makeMove(game.board, 'O', playerMove)
+                    page += TTT.drawBoard(game, game.board)
+                    page += '<br>' + playerMove
+                    turn = 'X'
                     if game.isWinner(game.board, 'O'):
-                        page += game.drawBoard(game.board)
-                        page += '<br>Player two wins!<br>' # Add hyperlinks here for "play again" and "quit/logout".
+                        page += '<br>Player X wins!<br>'  # Add hyperlinks here for "play again" and "quit/logout".
                         game.board = theBoard
                         gameIsPlaying = False
                         return [page.encode()]
-                    if game.isBoardFull(game.board):
-                        page += game.drawBoard(game.board)
-                        page += '<br>The game is a tie.<br>' # Add hyperlinks here for "play again" and "quit/logout".
-                        game.board = theBoard
-                        gameIsPlaying = False
-                        return [page.encode()]
+                    for i in range(1, 10):
+                        if game.isBoardFull(game.board, i):
+                            page += '<br>The game is a tie.<br>'
+                            # Add hyperlinks here for "play again" and "quit/logout".
+                            game.board = theBoard
+                            return [page.encode()]
                     else:
-                        turn = 'X'
-
-                if not game.playAgain():
-                    break  # Do we need a playAgain() function, or can there just by hyperlinks where I left the comments?
-
-            page += '</body></html>'
-            return [page.encode()]
+                        return [page.encode()]
+                else:
+                    return [page.encode()]
         else:
             return ['Not logged in. <a href="/">Login</a>'.encode()]
 
