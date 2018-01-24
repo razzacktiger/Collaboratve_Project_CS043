@@ -51,10 +51,12 @@ class TTT:
     def isSpaceFree(self, board, move):
         # Return true if the passed move is free on the passed board.
         return board[move] == ' '
-
-    def isBoardFull(self, board):
+    def isBoardFull(self, board, move):
+        def isSpaceFree(board, move):
+            # Return true if the passed move is free on the passed board.
+            return board[move] == ' '
         # Return True if every space on the board has been taken. Otherwise return False.
-        for i in range(1, 10):
-            if isSpaceFree(board, i):
+        for move in range(1, 10):
+            if isSpaceFree(board, move):
                 return False
         return True
