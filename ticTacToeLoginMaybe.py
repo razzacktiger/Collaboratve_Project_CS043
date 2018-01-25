@@ -24,6 +24,7 @@ theBoard = ['', '<input type="radio" name="playerMove" value="1">',
                 '<input type="radio" name="playerMove" value="8">',
                 '<input type="radio" name="playerMove" value="9">']
 game = TTT(theBoard)
+game.turn = 'new game'
 
 def application(environ, start_response):
     headers = [('Content-Type', 'text/html; charset=utf-8')]
@@ -76,73 +77,73 @@ def application(environ, start_response):
 
         # This is where the game begins. This section of is code only executed if the login form works, and if the user
         # is successfully logged in.
-
         # ------------------------------------------------------------------------------------------------------------ #
         if user:
             page = str('<!DOCTYPE html><html><head><title>TTT Game</title></head><body style="text-align:center;">' +
                        '<h2>Tic-Tac-Toe</h2>')
-            global turn
-            turn = game.whoGoesFirst()
-                                    # Just as a side note, I'm not sure we even need this line for the game to run.
-            while turn == 'X':
-                page += '<br>It is/was X\'s turn<br>'
+
+            if game.turn == 'new game':
+                game.turn = game.whoGoesFirst()
+
+            if game.turn == 'X':
+                page += '<br>It is O\'s turn<br>' # this looks like the opposite of what it should be, but it works
                 if 'playerMove' not in params:
                     page += TTT.drawBoard(game, game.board)
                     return [page.encode()]
-                elif 'playerMove' in params:
+                else:
                     playerMove = params['playerMove'][0]
                     game.board = game.makeMove(game.board, 'X', playerMove)
-                    page += TTT.drawBoard(game, game.board)
-                    page += '<br>' + playerMove
-                    turn = 'O'
+                    page += game.drawBoard(game.board)
+                    game.turn = 'O'
                     if game.isWinner(game.board, 'X'):
+                        page = ('<!DOCTYPE html><html><head><title>TTT Game</title></head>' +
+                                '<body style="text-align:center;"><h2>Tic-Tac-Toe</h2>')
                         page += '<br>Player X wins!<br>' # Add hyperlinks here for "play again" and "quit/logout".
                         game.board = theBoard
-                        gameIsPlaying = False
+                        game.turn = 'new game'
                         return [page.encode()]
-                    for i in range(1, 10):
-                        if game.isBoardFull(game.board, i):
-                            page += '<br>The game is a tie.<br>'
-                             # Add hyperlinks here for "play again" and "quit/logout".
-                            game.board = theBoard
-                            return [page.encode()]
+                    elif game.isBoardFull(game.board, playerMove):
+                        page = ('<!DOCTYPE html><html><head><title>TTT Game</title></head>' +
+                                '<body style="text-align:center;"><h2>Tic-Tac-Toe</h2>')
+                        page += '<br>The game is a tie.<br>'
+                        # Add hyperlinks here for "play again" and "quit/logout".
+                        game.board = theBoard
+                        game.turn = 'new game'
+                        return [page.encode()]
                     else:
                         return [page.encode()]
-                else:
-                    return [page.encode()]
 
-            while turn == 'O':
-                page += '<br>It is/was O\'s turn<br>'
+            if game.turn == 'O':
+                page += '<br>It is X\'s turn<br>' # this looks like the opposite of what it should be, but it works
                 if 'playerMove' not in params:
                     page += TTT.drawBoard(game, game.board)
                     return [page.encode()]
-                elif 'playerMove' in params:
+                else:
                     playerMove = params['playerMove'][0]
                     game.board = game.makeMove(game.board, 'O', playerMove)
-                    page += TTT.drawBoard(game, game.board)
-                    page += '<br>' + playerMove
-                    turn = 'X'
+                    page += game.drawBoard(game.board)
+                    game.turn = 'X'
                     if game.isWinner(game.board, 'O'):
-                        page += '<br>Player X wins!<br>'  # Add hyperlinks here for "play again" and "quit/logout".
+                        page = ('<!DOCTYPE html><html><head><title>TTT Game</title></head>' +
+                                '<body style="text-align:center;"><h2>Tic-Tac-Toe</h2>')
+                        page += '<br>Player O wins!<br>' # Add hyperlinks here for "play again" and "quit/logout".
                         game.board = theBoard
-                        gameIsPlaying = False
+                        game.turn = 'new game'
                         return [page.encode()]
-                    for i in range(1, 10):
-                        if game.isBoardFull(game.board, i):
-                            page += '<br>The game is a tie.<br>'
-                            # Add hyperlinks here for "play again" and "quit/logout".
-                            game.board = theBoard
-                            return [page.encode()]
+                    elif game.isBoardFull(game.board, playerMove):
+                        page = ('<!DOCTYPE html><html><head><title>TTT Game</title></head>' +
+                                '<body style="text-align:center;"><h2>Tic-Tac-Toe</h2>')
+                        page += '<br>The game is a tie.<br>' # Add hyperlinks here for "play again" and "quit/logout".
+                        game.board = theBoard
+                        game.turn = 'new game'
+                        return [page.encode()]
                     else:
                         return [page.encode()]
-                else:
-                    return [page.encode()]
         else:
             return ['Not logged in. <a href="/">Login</a>'.encode()]
 
     elif path == '/':
         start_response('200 OK', headers)
-
         register_or_login = '''<!DOCTYPE html><html><head><title>Register/Login</title></head>
         <body style="text-align:center">
         <h1>Welcome to Tic-Tac-Toe</h1>
