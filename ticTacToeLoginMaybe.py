@@ -86,11 +86,13 @@ def application(environ, start_response):
                 game.turn = game.whoGoesFirst()
 
             if game.turn == 'X':
-                page += '<br>It is O\'s turn<br>' # this looks like the opposite of what it should be, but it works
+                page += '<br>It is X\'s turn<br>'
+                # this looks like the opposite of what it should be, but it works
                 if 'playerMove' not in params:
                     page += TTT.drawBoard(game, game.board)
                     return [page.encode()]
                 else:
+                    page += '<br>It is O\'s turn<br>'
                     playerMove = params['playerMove'][0]
                     game.board = game.makeMove(game.board, 'X', playerMove)
                     page += game.drawBoard(game.board)
@@ -113,12 +115,14 @@ def application(environ, start_response):
                     else:
                         return [page.encode()]
 
-            if game.turn == 'O':
-                page += '<br>It is X\'s turn<br>' # this looks like the opposite of what it should be, but it works
+            elif game.turn == 'O':
+                 # this looks like the opposite of what it should be, but it works
                 if 'playerMove' not in params:
+                    page += '<br>It is O\'s turn<br>'
                     page += TTT.drawBoard(game, game.board)
                     return [page.encode()]
                 else:
+                    page += '<br>It is X\'s turn<br>'
                     playerMove = params['playerMove'][0]
                     game.board = game.makeMove(game.board, 'O', playerMove)
                     page += game.drawBoard(game.board)
