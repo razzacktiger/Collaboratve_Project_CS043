@@ -86,9 +86,9 @@ def application(environ, start_response):
                 game.turn = game.whoGoesFirst()
 
             if game.turn == 'X':
-                page += '<br>It is X\'s turn<br>'
                 # this looks like the opposite of what it should be, but it works
                 if 'playerMove' not in params:
+                    page += '<br>It is X\'s turn<br>'
                     page += TTT.drawBoard(game, game.board)
                     return [page.encode()]
                 else:
