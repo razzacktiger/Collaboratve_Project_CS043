@@ -82,6 +82,16 @@ def application(environ, start_response):
             page = str('<!DOCTYPE html><html><head><title>TTT Game</title></head><body style="text-align:center;">' +
                        '<h2>Tic-Tac-Toe</h2>')
 
+            theBoard = ['', '<input type="radio" name="playerMove" value="1">',
+                '<input type="radio" name="playerMove" value="2">',
+                '<input type="radio" name="playerMove" value="3">',
+                '<input type="radio" name="playerMove" value="4">',
+                '<input type="radio" name="playerMove" value="5">',
+                '<input type="radio" name="playerMove" value="6">',
+                '<input type="radio" name="playerMove" value="7">',
+                '<input type="radio" name="playerMove" value="8">',
+                '<input type="radio" name="playerMove" value="9">']
+            
             if game.turn == 'new game':
                 game.turn = game.whoGoesFirst()
 
