@@ -86,7 +86,6 @@ def application(environ, start_response):
                 game.turn = game.whoGoesFirst()
 
             if game.turn == 'X':
-                # this looks like the opposite of what it should be, but it works
                 if 'playerMove' not in params:
                     page += '<br>It is X\'s turn<br>'
                     page += TTT.drawBoard(game, game.board)
@@ -98,17 +97,22 @@ def application(environ, start_response):
                     page += game.drawBoard(game.board)
                     game.turn = 'O'
                     if game.isWinner(game.board, 'X'):
-                        page = ('<!DOCTYPE html><html><head><title>TTT Game</title></head>' +
-                                '<body style="text-align:center;"><h2>Tic-Tac-Toe</h2>')
-                        page += '<br>Player X wins!<br>' # Add hyperlinks here for "play again" and "quit/logout".
+                        page = '''<!DOCTYPE html><html><head><title>TTT Game</title></head>
+                                  <body style="text-align:center;">                        
+                                  <h2>Tic-Tac-Toe</h2><br>                                 
+                                  Player X wins!<br>                                   
+                                  <a href="/play">Play again</a><br>                       
+                                  <a href="/logout">Log out</a>'''                         
                         game.board = theBoard
                         game.turn = 'new game'
                         return [page.encode()]
                     elif game.isBoardFull(game.board, playerMove):
-                        page = ('<!DOCTYPE html><html><head><title>TTT Game</title></head>' +
-                                '<body style="text-align:center;"><h2>Tic-Tac-Toe</h2>')
-                        page += '<br>The game is a tie.<br>'
-                        # Add hyperlinks here for "play again" and "quit/logout".
+                        page = '''<!DOCTYPE html><html><head><title>TTT Game</title></head>
+                                  <body style="text-align:center;">                        
+                                  <h2>Tic-Tac-Toe</h2><br>                                 
+                                  The game is a tie.<br>                                   
+                                  <a href="/play">Play again</a><br>                       
+                                  <a href="/logout">Log out</a>'''
                         game.board = theBoard
                         game.turn = 'new game'
                         return [page.encode()]
@@ -116,7 +120,6 @@ def application(environ, start_response):
                         return [page.encode()]
 
             elif game.turn == 'O':
-                 # this looks like the opposite of what it should be, but it works
                 if 'playerMove' not in params:
                     page += '<br>It is O\'s turn<br>'
                     page += TTT.drawBoard(game, game.board)
@@ -128,16 +131,22 @@ def application(environ, start_response):
                     page += game.drawBoard(game.board)
                     game.turn = 'X'
                     if game.isWinner(game.board, 'O'):
-                        page = ('<!DOCTYPE html><html><head><title>TTT Game</title></head>' +
-                                '<body style="text-align:center;"><h2>Tic-Tac-Toe</h2>')
-                        page += '<br>Player O wins!<br>' # Add hyperlinks here for "play again" and "quit/logout".
+                        page = '''<!DOCTYPE html><html><head><title>TTT Game</title></head>
+                                  <body style="text-align:center;">                        
+                                  <h2>Tic-Tac-Toe</h2><br>                                 
+                                  Player O wins!<br>                                   
+                                  <a href="/play">Play again</a><br>                       
+                                  <a href="/logout">Log out</a>'''
                         game.board = theBoard
                         game.turn = 'new game'
                         return [page.encode()]
                     elif game.isBoardFull(game.board, playerMove):
-                        page = ('<!DOCTYPE html><html><head><title>TTT Game</title></head>' +
-                                '<body style="text-align:center;"><h2>Tic-Tac-Toe</h2>')
-                        page += '<br>The game is a tie.<br>' # Add hyperlinks here for "play again" and "quit/logout".
+                        page = '''<!DOCTYPE html><html><head><title>TTT Game</title></head>
+                                  <body style="text-align:center;">                        
+                                  <h2>Tic-Tac-Toe</h2><br>                                 
+                                  The game is a tie.<br>                                   
+                                  <a href="/play">Play again</a><br>                       
+                                  <a href="/logout">Log out</a>'''
                         game.board = theBoard
                         game.turn = 'new game'
                         return [page.encode()]
