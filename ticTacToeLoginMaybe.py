@@ -44,7 +44,7 @@ def application(environ, start_response):
             connection.commit()
             start_response('200 OK', headers)
             headers.append(('Set-Cookie', 'session={}:{}'.format(un, pw)))
-            return ['Account successfully created. <br><a href="/">Login</a>'.encode()]
+            return ['Account successfully created. <br><a href="/play">Play Tic-Tac-Toe</a>'.encode()]
 
     elif path == '/login' and un and pw:
         user = cursor.execute('SELECT * FROM users WHERE username = ? AND password = ?', [un, pw]).fetchall()
