@@ -48,15 +48,11 @@ class TTT:
                 (bo[7] == le and bo[5] == le and bo[3] == le) or  # diagonal
                 (bo[9] == le and bo[5] == le and bo[1] == le))  # diagonal
 
-    def isSpaceFree(self, board, move):
-        # Return true if the passed move is free on the passed board.
-        return board[move] == ' '
+
     def isBoardFull(self, board, move):
-        def isSpaceFree(board, move):
-            # Return true if the passed move is free on the passed board.
-            return board[move] == ' '
         # Return True if every space on the board has been taken. Otherwise return False.
-        for move in range(1, 10):
-            if isSpaceFree(board, move):
-                return False
-        return True
+        boardIsFull = True
+        for i in range(1, 10):
+            if (board[i] != 'X') and (board[i] != 'O'):
+                boardIsFull = False
+        return boardIsFull
